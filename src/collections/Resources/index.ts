@@ -1,4 +1,5 @@
 import { CollectionConfig } from "payload/types";
+import { slugField } from "../../fields/slug";
 
 const Resources: CollectionConfig = {
   slug: "resources",
@@ -8,7 +9,9 @@ const Resources: CollectionConfig = {
     update: ({ req: { user } }) => Boolean(user), // Only authenticated users
     delete: ({ req: { user } }) => Boolean(user), // Only authenticated users
   },
+
   fields: [
+    // slugField(),
     {
       name: "title",
       type: "text",
@@ -27,7 +30,7 @@ const Resources: CollectionConfig = {
     },
     {
       name: "content",
-      type: "richText",
+      type: "text",
     },
     {
       name: "resource", // required
