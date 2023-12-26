@@ -1,5 +1,5 @@
 import { CollectionConfig } from "payload/types";
-import { slugField } from "../../fields/slug";
+import { generateSlug } from "./hooks/generate-slug";
 
 const Resources: CollectionConfig = {
   slug: "resources",
@@ -9,9 +9,64 @@ const Resources: CollectionConfig = {
     update: ({ req: { user } }) => Boolean(user), // Only authenticated users
     delete: ({ req: { user } }) => Boolean(user), // Only authenticated users
   },
+  hooks: {
+    // ...other hooks
+    beforeValidate: [generateSlug],
+  },
 
+  endpoints: [
+    {
+      path: "/slug/:slug",
+      method: "get",
+      handler: async (req, res, next) => {
+        const { slug } = req.params;
+        const result = await req.payload.find({
+          collection: "resources",
+          where: {
+            slug: {
+              equals: slug,
+            },
+          },
+        });
+
+        if (result && result.docs && result.docs.length > 0) {
+          res.status(200).json(result.docs[0]);
+        } else {
+          res.status(404).send({ error: "Item not found" });
+        }
+      },
+    },
+    {
+      path: "/featured/:resource",
+      method: "get",
+      handler: async (req, res, next) => {
+        try {
+          const { resource } = req.params;
+          const featuredItems = await req.payload.find({
+            collection: "resources",
+            where: {
+              featured: {
+                equals: true,
+              },
+              resource: {
+                equals: resource,
+              },
+            },
+          });
+          res.status(200).json(featuredItems.docs);
+        } catch (error) {
+          res.status(500).json({ error: "Internal Server Error" });
+        }
+      },
+    },
+  ],
   fields: [
-    // slugField(),
+    {
+      name: "categories",
+      type: "relationship",
+      relationTo: ["categories"],
+      hasMany: true,
+    },
     {
       name: "title",
       type: "text",
@@ -67,6 +122,13 @@ const Resources: CollectionConfig = {
           type: "text",
         },
       ],
+    },
+    {
+      name: "slug",
+      type: "text",
+      admin: {
+        readOnly: true, // makes the field read-only in the admin UI
+      },
     },
   ],
 };

@@ -19,31 +19,6 @@ const start = async () => {
     },
   });
 
-  app.get("/api/resources/:slug", async (req, res) => {
-    try {
-      const { slug } = req.params;
-
-      // Assuming 'resources' is your collection name
-      const data = await payload.find({
-        collection: "resources",
-        where: {
-          title: {
-            equals: slug,
-          },
-        },
-        depth: 1, // adjust according to your needs
-      });
-
-      if (data.docs.length === 0) {
-        return res.status(404).send("Resource not found");
-      }
-
-      res.json(data.docs[0]);
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
-  });
-
   app.listen(3001);
 };
 
