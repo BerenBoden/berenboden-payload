@@ -30,4 +30,4 @@ jobs:
             docker build -t berenboden-payload .
             docker stop berenboden-payload || true
             docker rm berenboden-payload || true
-            docker run --name berenboden-payload -d berenboden-payload
+            docker run -d --env-file /home/${{ secrets.VPS_USERNAME }}/berenboden-payload/.env --network berenboden-payload --name berenboden-payload berenboden-payload
