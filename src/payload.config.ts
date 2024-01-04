@@ -18,7 +18,7 @@ export default buildConfig({
   editor: slateEditor({}),
   collections: [Users, Resources, Groups],
   csrf: [
-    'https://berenboden.com'
+    'https://api.berenboden.com'
   ],
   typescript: {
     outputFile: path.resolve(__dirname, "payload-types.ts"),
