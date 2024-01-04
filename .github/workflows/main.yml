@@ -1,6 +1,12 @@
+name: publish
+
+on:
+  push:
+    branches: [ "master" ]
+
 jobs:
   deploy:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
