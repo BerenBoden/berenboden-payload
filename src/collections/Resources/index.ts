@@ -101,10 +101,6 @@ const Resources: CollectionConfig = {
       type: "text",
     },
     {
-      name: "test",
-      type: "text",
-    },
-    {
       name: "cover",
       type: "text",
     },
