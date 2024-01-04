@@ -3,7 +3,7 @@ import path from "path";
 import { payloadCloud } from "@payloadcms/plugin-cloud";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import { webpackBundler } from "@payloadcms/bundler-webpack";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { slateEditor } from "@payloadcms/richtext-slate";
 import { buildConfig } from "payload/config";
 
 import Users from "./collections/Users";
@@ -15,11 +15,11 @@ export default buildConfig({
     user: Users.slug,
     bundler: webpackBundler(),
   },
-  editor: lexicalEditor({}),
+  editor: slateEditor({}),
   collections: [Users, Resources, Groups],
-  // csrf: [
-  //   'https://berenboden.com'
-  // ],
+  csrf: [
+    'https://berenboden.com'
+  ],
   typescript: {
     outputFile: path.resolve(__dirname, "payload-types.ts"),
   },

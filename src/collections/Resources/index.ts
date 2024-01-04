@@ -1,5 +1,6 @@
 import { CollectionConfig } from "payload/types";
 import { generateSlug } from "./hooks/generate-slug";
+import { slateEditor } from "@payloadcms/richtext-slate";
 
 const Resources: CollectionConfig = {
   slug: "resources",
@@ -33,6 +34,34 @@ const Resources: CollectionConfig = {
           res.status(200).json(result.docs[0]);
         } else {
           res.status(404).send({ error: "Item not found" });
+        }
+      },
+    },
+    {
+      path: "/type/:resource",
+      method: "get",
+      handler: async (req, res, next) => {
+        try {
+          const { resource } = req.params;
+          const page =
+            typeof req.query.page === "string" ? parseInt(req.query.page) : 1;
+          const limit =
+            typeof req.query.limit === "string"
+              ? parseInt(req.query.limit)
+              : 10;
+          const resources = await req.payload.find({
+            collection: "resources",
+            where: {
+              resource: {
+                equals: resource,
+              },
+            },
+            limit: limit,
+            page: page,
+          });
+          res.status(200).json(resources);
+        } catch (error) {
+          res.status(500).json({ error: "Internal Server Error" });
         }
       },
     },
@@ -85,7 +114,18 @@ const Resources: CollectionConfig = {
     },
     {
       name: "content",
-      type: "text",
+      type: "richText",
+      // Pass the Slate editor here and configure it accordingly
+      editor: slateEditor({
+        admin: {
+          elements: [
+            // customize elements allowed in Slate editor here
+          ],
+          leaves: [
+            // customize leaves allowed in Slate editor here
+          ],
+        },
+      }),
     },
     {
       name: "resource", // required
