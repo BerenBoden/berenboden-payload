@@ -101,6 +101,10 @@ const Resources: CollectionConfig = {
       type: "text",
     },
     {
+      name: "shortDescription",
+      type: "text",
+    },
+    {
       name: "cover",
       type: "text",
     },
