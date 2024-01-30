@@ -158,11 +158,22 @@ const Resources: CollectionConfig = {
       },
     },
     {
-      name: "externalLinks",
-      type: "array",
+      name: "links", // required
+      type: "array", // required
+      label: "External Links",
+      minRows: 1,
+      maxRows: 10,
+      labels: {
+        singular: "Link",
+        plural: "Links",
+      },
       fields: [
         {
-          name: "externalLink",
+          name: "label",
+          type: "text",
+        },
+        {
+          name: "link",
           type: "text",
         },
       ],
